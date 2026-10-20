@@ -13,7 +13,7 @@ Live and historical prices for ten precious and base metals, gold karat and silv
 | Endpoint reference | https://metal-sentinel.com/endpoints |
 | Pricing | https://metal-sentinel.com/pricing |
 | OpenAPI 3.1 spec | [`openapi.json`](openapi.json) (also served at https://metal-sentinel.com/openapi.json) |
-| Postman collection | [`postman/metal-sentinel.postman_collection.json`](postman/metal-sentinel.postman_collection.json) |
+| Postman collection | [`postman/metal-sentinel.postman_collection.json`](postman/metal-sentinel.postman_collection.json), or open the [public Postman workspace](https://www.postman.com/mycrofts-team/metal-sentinel/overview) |
 | Free embeddable widgets | https://metal-sentinel.com/widgets |
 
 ## Quick start
@@ -110,7 +110,7 @@ The samples above raise on that field so you never silently read a missing price
 
 ## Postman
 
-Import `postman/metal-sentinel.postman_collection.json`, then set the `rapidapi_key` collection variable. Every endpoint is pre-filled with example parameters.
+The collection is published on the [Postman API Network](https://www.postman.com/mycrofts-team/metal-sentinel/overview): fork it into your own workspace, set the `rapidapi_key` collection variable, and every endpoint is pre-filled with example parameters. The same file is in `postman/` if you prefer to import it by hand.
 
 ## Contributing
 
