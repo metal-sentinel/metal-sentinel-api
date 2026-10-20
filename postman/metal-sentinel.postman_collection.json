@@ -1,0 +1,569 @@
+{
+  "info": {
+    "_postman_id": "c45bbb2a-c7ce-4f11-8c7a-565446f8e7cc",
+    "name": "Metal Sentinel API",
+    "description": "Live spot quotes for ten metals refreshed every 15 seconds, daily historical series, gold karat and silver fineness prices, crypto and forex quotes, market status and mining equities. Subscribe on RapidAPI to get an API key; the free plan includes 7,500 requests per month.\n\nDocs: https://metal-sentinel.com/endpoints\nGet a key: https://rapidapi.com/ghostsvos/api/metal-sentinel\n\nSet the `rapidapi_key` collection variable to your RapidAPI key.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Spot prices",
+      "description": "Current quotes for metals, gold karats and silver fineness.",
+      "item": [
+        {
+          "name": "Current spot price for one metal in one currency",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metal-quote?symbol=AU&currency=USD",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "metal-quote"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "AU",
+                  "disabled": false,
+                  "description": "Metal symbol."
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": true,
+                  "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote."
+                }
+              ]
+            },
+            "description": "Current spot price for one metal in one currency"
+          },
+          "response": []
+        },
+        {
+          "name": "Gold spot price with 24k, 18k, 14k and 9k karat prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gold-price?currency=USD",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "gold-price"
+              ],
+              "query": [
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": true,
+                  "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote."
+                }
+              ]
+            },
+            "description": "Gold spot price with 24k, 18k, 14k and 9k karat prices"
+          },
+          "response": []
+        },
+        {
+          "name": "Silver spot price with 999, 958, 925, 900 and 800 fineness prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/silver-price?currency=USD",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "silver-price"
+              ],
+              "query": [
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": true,
+                  "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote."
+                }
+              ]
+            },
+            "description": "Silver spot price with 999, 958, 925, 900 and 800 fineness prices"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Historical",
+      "description": "Daily series and point-in-time snapshots.",
+      "item": [
+        {
+          "name": "Daily historical prices between two timestamps",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/metal-history?symbol=AU&currency=USD&startTime=1757400000&endTime=1760000000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "metal-history"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "AU",
+                  "disabled": false,
+                  "description": "Metal symbol."
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "startTime",
+                  "value": "1757400000",
+                  "disabled": false,
+                  "description": "Unix timestamp (seconds) of the first day."
+                },
+                {
+                  "key": "endTime",
+                  "value": "1760000000",
+                  "disabled": false,
+                  "description": "Unix timestamp (seconds) of the last day."
+                },
+                {
+                  "key": "limit",
+                  "value": "30",
+                  "disabled": true,
+                  "description": "Maximum number of daily points."
+                },
+                {
+                  "key": "offset",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Number of daily points to skip."
+                }
+              ]
+            },
+            "description": "Daily historical prices between two timestamps"
+          },
+          "response": []
+        },
+        {
+          "name": "Snapshots now and 30 days, 60 days, 1 year and 5 years before a timestamp",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/historical-points?symbol=AU&currency=USD&timestamp=1760000000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "historical-points"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "AU",
+                  "disabled": false,
+                  "description": "Metal symbol."
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": false,
+                  "description": "Unix timestamp (seconds) the snapshots are relative to."
+                }
+              ]
+            },
+            "description": "Snapshots now and 30 days, 60 days, 1 year and 5 years before a timestamp"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Crypto & forex",
+      "description": "Cryptocurrency and foreign exchange quotes.",
+      "item": [
+        {
+          "name": "Live cryptocurrency quote with 24 hour comparison",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/crypto-quote?symbol=BTC&currency=USD",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "crypto-quote"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "BTC",
+                  "disabled": false,
+                  "description": "Crypto symbol. See /api/allowed-cryptos."
+                },
+                {
+                  "key": "currency",
+                  "value": "USD",
+                  "disabled": false,
+                  "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": true,
+                  "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote."
+                },
+                {
+                  "key": "compareToTime",
+                  "value": "24h",
+                  "disabled": true,
+                  "description": "Reference period for the change fields, for example 24h."
+                }
+              ]
+            },
+            "description": "Live cryptocurrency quote with 24 hour comparison"
+          },
+          "response": []
+        },
+        {
+          "name": "Foreign exchange rate against USD",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/forex-quote?symbol=EUR",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "forex-quote"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "EUR",
+                  "disabled": false,
+                  "description": "ISO 4217 currency code to quote against USD."
+                },
+                {
+                  "key": "currency",
+                  "value": "GBP",
+                  "disabled": true,
+                  "description": "Optional second currency to convert the rate into."
+                },
+                {
+                  "key": "timestamp",
+                  "value": "1760000000",
+                  "disabled": true,
+                  "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote."
+                }
+              ]
+            },
+            "description": "Foreign exchange rate against USD"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Equities",
+      "description": "Mining and commodity stocks.",
+      "item": [
+        {
+          "name": "Live mining and commodity equities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/get-stock",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "get-stock"
+              ],
+              "query": []
+            },
+            "description": "Live mining and commodity equities"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reference",
+      "description": "Supported symbols, currencies and market status.",
+      "item": [
+        {
+          "name": "Whether the metals market is open and when it next changes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/market-status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "market-status"
+              ],
+              "query": []
+            },
+            "description": "Whether the metals market is open and when it next changes"
+          },
+          "response": []
+        },
+        {
+          "name": "Supported metal symbols",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/allowed-metals",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "allowed-metals"
+              ],
+              "query": []
+            },
+            "description": "Supported metal symbols"
+          },
+          "response": []
+        },
+        {
+          "name": "Supported fiat currency codes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/allowed-currencies",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "allowed-currencies"
+              ],
+              "query": []
+            },
+            "description": "Supported fiat currency codes"
+          },
+          "response": []
+        },
+        {
+          "name": "Supported cryptocurrency symbols",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-rapidapi-key",
+                "value": "{{rapidapi_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-rapidapi-host",
+                "value": "metal-sentinel.p.rapidapi.com",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/allowed-cryptos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "allowed-cryptos"
+              ],
+              "query": []
+            },
+            "description": "Supported cryptocurrency symbols"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://metal-sentinel.p.rapidapi.com",
+      "type": "string"
+    },
+    {
+      "key": "rapidapi_key",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

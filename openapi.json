@@ -1,0 +1,1164 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Metal Sentinel API",
+        "version": "1.0.0",
+        "summary": "Real-time and historical precious and base metal prices, crypto and forex quotes, and mining stock data.",
+        "description": "Live spot quotes for ten metals refreshed every 15 seconds, daily historical series, gold karat and silver fineness prices, crypto and forex quotes, market status and mining equities. Subscribe on RapidAPI to get an API key; the free plan includes 7,500 requests per month.",
+        "termsOfService": "https://metal-sentinel.com/terms",
+        "contact": {
+            "name": "Metal Sentinel",
+            "url": "https://metal-sentinel.com/contact"
+        },
+        "license": {
+            "name": "Proprietary",
+            "url": "https://metal-sentinel.com/terms"
+        }
+    },
+    "externalDocs": {
+        "description": "Human-readable endpoint reference",
+        "url": "https://metal-sentinel.com/endpoints"
+    },
+    "servers": [
+        {
+            "url": "https://metal-sentinel.p.rapidapi.com",
+            "description": "RapidAPI gateway"
+        }
+    ],
+    "security": [
+        {
+            "RapidApiKey": [],
+            "RapidApiHost": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Spot prices",
+            "description": "Current quotes for metals, gold karats and silver fineness."
+        },
+        {
+            "name": "Historical",
+            "description": "Daily series and point-in-time snapshots."
+        },
+        {
+            "name": "Crypto & forex",
+            "description": "Cryptocurrency and foreign exchange quotes."
+        },
+        {
+            "name": "Equities",
+            "description": "Mining and commodity stocks."
+        },
+        {
+            "name": "Reference",
+            "description": "Supported symbols, currencies and market status."
+        }
+    ],
+    "paths": {
+        "/api/metal-quote": {
+            "get": {
+                "tags": [
+                    "Spot prices"
+                ],
+                "operationId": "getMetalQuote",
+                "summary": "Current spot price for one metal in one currency",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/metalSymbol"
+                    },
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "$ref": "#/components/parameters/timestamp"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/QuoteResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gold-price": {
+            "get": {
+                "tags": [
+                    "Spot prices"
+                ],
+                "operationId": "getGoldPrice",
+                "summary": "Gold spot price with 24k, 18k, 14k and 9k karat prices",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "$ref": "#/components/parameters/timestamp"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/GoldQuoteResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/silver-price": {
+            "get": {
+                "tags": [
+                    "Spot prices"
+                ],
+                "operationId": "getSilverPrice",
+                "summary": "Silver spot price with 999, 958, 925, 900 and 800 fineness prices",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "$ref": "#/components/parameters/timestamp"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/SilverQuoteResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/metal-history": {
+            "get": {
+                "tags": [
+                    "Historical"
+                ],
+                "operationId": "getMetalHistory",
+                "summary": "Daily historical prices between two timestamps",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/metalSymbol"
+                    },
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "name": "startTime",
+                        "in": "query",
+                        "required": true,
+                        "description": "Unix timestamp (seconds) of the first day.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": 1757400000
+                    },
+                    {
+                        "name": "endTime",
+                        "in": "query",
+                        "required": true,
+                        "description": "Unix timestamp (seconds) of the last day.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": 1760000000
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "description": "Maximum number of daily points.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 30,
+                            "default": 30
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "description": "Number of daily points to skip.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 30
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/HistoryResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/historical-points": {
+            "get": {
+                "tags": [
+                    "Historical"
+                ],
+                "operationId": "getHistoricalPoints",
+                "summary": "Snapshots now and 30 days, 60 days, 1 year and 5 years before a timestamp",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/metalSymbol"
+                    },
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "required": true,
+                        "description": "Unix timestamp (seconds) the snapshots are relative to.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        },
+                        "example": 1760000000
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/HistoricalPointsResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/crypto-quote": {
+            "get": {
+                "tags": [
+                    "Crypto & forex"
+                ],
+                "operationId": "getCryptoQuote",
+                "summary": "Live cryptocurrency quote with 24 hour comparison",
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "query",
+                        "required": true,
+                        "description": "Crypto symbol. See /api/allowed-cryptos.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "BTC"
+                    },
+                    {
+                        "$ref": "#/components/parameters/currency"
+                    },
+                    {
+                        "$ref": "#/components/parameters/timestamp"
+                    },
+                    {
+                        "name": "compareToTime",
+                        "in": "query",
+                        "required": false,
+                        "description": "Reference period for the change fields, for example 24h.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "24h"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/QuoteResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/forex-quote": {
+            "get": {
+                "tags": [
+                    "Crypto & forex"
+                ],
+                "operationId": "getForexQuote",
+                "summary": "Foreign exchange rate against USD",
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "query",
+                        "required": true,
+                        "description": "ISO 4217 currency code to quote against USD.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "EUR"
+                    },
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "required": false,
+                        "description": "Optional second currency to convert the rate into.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "GBP"
+                    },
+                    {
+                        "$ref": "#/components/parameters/timestamp"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote data, or an error object when validation fails or the upstream feed reports an error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ForexQuoteResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/get-stock": {
+            "get": {
+                "tags": [
+                    "Equities"
+                ],
+                "operationId": "getStocks",
+                "summary": "Live mining and commodity equities",
+                "responses": {
+                    "200": {
+                        "description": "List of equities, or an error object when the upstream feed fails.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Equity"
+                                            }
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/market-status": {
+            "get": {
+                "tags": [
+                    "Reference"
+                ],
+                "operationId": "getMarketStatus",
+                "summary": "Whether the metals market is open and when it next changes",
+                "responses": {
+                    "200": {
+                        "description": "Market status.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/MarketStatus"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/allowed-metals": {
+            "get": {
+                "tags": [
+                    "Reference"
+                ],
+                "operationId": "getAllowedMetals",
+                "summary": "Supported metal symbols",
+                "responses": {
+                    "200": {
+                        "description": "Metal symbols.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "AU",
+                                            "AG",
+                                            "PT",
+                                            "PD",
+                                            "RH",
+                                            "CU",
+                                            "NI",
+                                            "AL",
+                                            "PB",
+                                            "ZN"
+                                        ]
+                                    }
+                                },
+                                "example": [
+                                    "AU",
+                                    "AG",
+                                    "PT",
+                                    "PD",
+                                    "RH",
+                                    "CU",
+                                    "NI",
+                                    "AL",
+                                    "PB",
+                                    "ZN"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/allowed-currencies": {
+            "get": {
+                "tags": [
+                    "Reference"
+                ],
+                "operationId": "getAllowedCurrencies",
+                "summary": "Supported fiat currency codes",
+                "responses": {
+                    "200": {
+                        "description": "Currency codes.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": [
+                                    "AED",
+                                    "AUD",
+                                    "CAD",
+                                    "CHF",
+                                    "EUR",
+                                    "GBP",
+                                    "JPY",
+                                    "USD"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/allowed-cryptos": {
+            "get": {
+                "tags": [
+                    "Reference"
+                ],
+                "operationId": "getAllowedCryptos",
+                "summary": "Supported cryptocurrency symbols",
+                "responses": {
+                    "200": {
+                        "description": "Crypto symbols.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": [
+                                    "BTC",
+                                    "ETH",
+                                    "SOL"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "RapidApiKey": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-RapidAPI-Key",
+                "description": "Your RapidAPI application key."
+            },
+            "RapidApiHost": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-RapidAPI-Host",
+                "description": "Always metal-sentinel.p.rapidapi.com."
+            }
+        },
+        "parameters": {
+            "metalSymbol": {
+                "name": "symbol",
+                "in": "query",
+                "required": true,
+                "description": "Metal symbol.",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "AU",
+                        "AG",
+                        "PT",
+                        "PD",
+                        "RH",
+                        "CU",
+                        "NI",
+                        "AL",
+                        "PB",
+                        "ZN"
+                    ]
+                },
+                "example": "AU"
+            },
+            "currency": {
+                "name": "currency",
+                "in": "query",
+                "required": true,
+                "description": "ISO 4217 fiat code or supported crypto token. See /api/allowed-currencies.",
+                "schema": {
+                    "type": "string"
+                },
+                "example": "USD"
+            },
+            "timestamp": {
+                "name": "timestamp",
+                "in": "query",
+                "required": false,
+                "description": "Unix timestamp (seconds) for a historical quote. Omit for the latest quote.",
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "example": 1760000000
+            }
+        },
+        "schemas": {
+            "QuoteResult": {
+                "type": "object",
+                "description": "One price point. Prices are per unit in the requested currency.",
+                "properties": {
+                    "symbol": {
+                        "type": "string",
+                        "example": "AU"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "ask": {
+                        "type": "number",
+                        "example": 4126.2
+                    },
+                    "mid": {
+                        "type": "number",
+                        "example": 4125.65
+                    },
+                    "bid": {
+                        "type": "number",
+                        "example": 4125.1
+                    },
+                    "high": {
+                        "type": "number",
+                        "description": "Day high.",
+                        "example": 4140.3
+                    },
+                    "low": {
+                        "type": "number",
+                        "description": "Day low.",
+                        "example": 4098.7
+                    },
+                    "open": {
+                        "type": "number",
+                        "example": 4110
+                    },
+                    "close": {
+                        "type": "number",
+                        "description": "Previous close.",
+                        "example": 4108.2
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Unix timestamp (seconds) of the quote.",
+                        "example": 1760000000
+                    },
+                    "change": {
+                        "type": "number",
+                        "description": "Change versus previous close.",
+                        "example": 17.45
+                    },
+                    "changePercentage": {
+                        "type": "number",
+                        "example": 0.42
+                    },
+                    "unit": {
+                        "type": "string",
+                        "description": "Pricing unit, for example OUNCE (troy ounce).",
+                        "example": "OUNCE"
+                    },
+                    "originalTime": {
+                        "type": "string",
+                        "description": "Quote time as reported by the source.",
+                        "example": "2026-10-20T18:47:15Z"
+                    },
+                    "extra": {
+                        "description": "Source-specific extra data, usually null."
+                    }
+                }
+            },
+            "QuoteResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/QuoteResult"
+                        }
+                    }
+                },
+                "required": [
+                    "results"
+                ]
+            },
+            "GoldQuoteResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "description": "One price point. Prices are per unit in the requested currency.",
+                            "properties": {
+                                "symbol": {
+                                    "type": "string",
+                                    "example": "AU"
+                                },
+                                "currency": {
+                                    "type": "string",
+                                    "example": "USD"
+                                },
+                                "ask": {
+                                    "type": "number",
+                                    "example": 4126.2
+                                },
+                                "mid": {
+                                    "type": "number",
+                                    "example": 4125.65
+                                },
+                                "bid": {
+                                    "type": "number",
+                                    "example": 4125.1
+                                },
+                                "high": {
+                                    "type": "number",
+                                    "description": "Day high.",
+                                    "example": 4140.3
+                                },
+                                "low": {
+                                    "type": "number",
+                                    "description": "Day low.",
+                                    "example": 4098.7
+                                },
+                                "open": {
+                                    "type": "number",
+                                    "example": 4110
+                                },
+                                "close": {
+                                    "type": "number",
+                                    "description": "Previous close.",
+                                    "example": 4108.2
+                                },
+                                "timestamp": {
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Unix timestamp (seconds) of the quote.",
+                                    "example": 1760000000
+                                },
+                                "change": {
+                                    "type": "number",
+                                    "description": "Change versus previous close.",
+                                    "example": 17.45
+                                },
+                                "changePercentage": {
+                                    "type": "number",
+                                    "example": 0.42
+                                },
+                                "unit": {
+                                    "type": "string",
+                                    "description": "Pricing unit, for example OUNCE (troy ounce).",
+                                    "example": "OUNCE"
+                                },
+                                "originalTime": {
+                                    "type": "string",
+                                    "description": "Quote time as reported by the source.",
+                                    "example": "2026-10-20T18:47:15Z"
+                                },
+                                "extra": {
+                                    "description": "Source-specific extra data, usually null."
+                                },
+                                "karat_prices": {
+                                    "type": "object",
+                                    "description": "Mid price scaled by purity.",
+                                    "properties": {
+                                        "24k": {
+                                            "type": "number"
+                                        },
+                                        "18k": {
+                                            "type": "number"
+                                        },
+                                        "14k": {
+                                            "type": "number"
+                                        },
+                                        "9k": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "example": {
+                                        "24k": 4125.65,
+                                        "18k": 3094.24,
+                                        "14k": 2406.63,
+                                        "9k": 1547.12
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "results"
+                ]
+            },
+            "SilverQuoteResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "description": "One price point. Prices are per unit in the requested currency.",
+                            "properties": {
+                                "symbol": {
+                                    "type": "string",
+                                    "example": "AU"
+                                },
+                                "currency": {
+                                    "type": "string",
+                                    "example": "USD"
+                                },
+                                "ask": {
+                                    "type": "number",
+                                    "example": 4126.2
+                                },
+                                "mid": {
+                                    "type": "number",
+                                    "example": 4125.65
+                                },
+                                "bid": {
+                                    "type": "number",
+                                    "example": 4125.1
+                                },
+                                "high": {
+                                    "type": "number",
+                                    "description": "Day high.",
+                                    "example": 4140.3
+                                },
+                                "low": {
+                                    "type": "number",
+                                    "description": "Day low.",
+                                    "example": 4098.7
+                                },
+                                "open": {
+                                    "type": "number",
+                                    "example": 4110
+                                },
+                                "close": {
+                                    "type": "number",
+                                    "description": "Previous close.",
+                                    "example": 4108.2
+                                },
+                                "timestamp": {
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Unix timestamp (seconds) of the quote.",
+                                    "example": 1760000000
+                                },
+                                "change": {
+                                    "type": "number",
+                                    "description": "Change versus previous close.",
+                                    "example": 17.45
+                                },
+                                "changePercentage": {
+                                    "type": "number",
+                                    "example": 0.42
+                                },
+                                "unit": {
+                                    "type": "string",
+                                    "description": "Pricing unit, for example OUNCE (troy ounce).",
+                                    "example": "OUNCE"
+                                },
+                                "originalTime": {
+                                    "type": "string",
+                                    "description": "Quote time as reported by the source.",
+                                    "example": "2026-10-20T18:47:15Z"
+                                },
+                                "extra": {
+                                    "description": "Source-specific extra data, usually null."
+                                },
+                                "fineness_prices": {
+                                    "type": "object",
+                                    "description": "Mid price scaled by fineness.",
+                                    "properties": {
+                                        "999": {
+                                            "type": "number"
+                                        },
+                                        "958": {
+                                            "type": "number"
+                                        },
+                                        "925": {
+                                            "type": "number"
+                                        },
+                                        "900": {
+                                            "type": "number"
+                                        },
+                                        "800": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "example": {
+                                        "999": 81.12,
+                                        "958": 77.79,
+                                        "925": 75.11,
+                                        "900": 73.08,
+                                        "800": 64.96
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "results"
+                ]
+            },
+            "HistoryResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Gold"
+                    },
+                    "results": {
+                        "type": "array",
+                        "description": "One point per day.",
+                        "items": {
+                            "$ref": "#/components/schemas/QuoteResult"
+                        }
+                    }
+                },
+                "required": [
+                    "results"
+                ]
+            },
+            "HistoricalPointsResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "symbol": {
+                        "type": "string",
+                        "example": "AU"
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "now": {
+                        "$ref": "#/components/schemas/QuoteResult"
+                    },
+                    "thirtyDay": {
+                        "$ref": "#/components/schemas/QuoteResult"
+                    },
+                    "sixtyDay": {
+                        "$ref": "#/components/schemas/QuoteResult"
+                    },
+                    "oneYear": {
+                        "$ref": "#/components/schemas/QuoteResult"
+                    },
+                    "fiveYear": {
+                        "$ref": "#/components/schemas/QuoteResult"
+                    }
+                }
+            },
+            "ForexQuoteResponse": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "ask": {
+                                    "type": "number"
+                                },
+                                "mid": {
+                                    "type": "number"
+                                },
+                                "bid": {
+                                    "type": "number"
+                                },
+                                "time": {
+                                    "type": "string"
+                                },
+                                "timestamp": {
+                                    "type": "integer",
+                                    "format": "int64"
+                                },
+                                "change": {
+                                    "type": "number"
+                                },
+                                "changePercentage": {
+                                    "type": "number"
+                                },
+                                "ctousd": {
+                                    "type": "number",
+                                    "description": "Units of USD per one unit of the symbol currency."
+                                },
+                                "usdtoc": {
+                                    "type": "number",
+                                    "description": "Units of the symbol currency per one USD."
+                                },
+                                "nytime": {
+                                    "type": "string",
+                                    "description": "Quote time in New York local time."
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "results"
+                ]
+            },
+            "MarketStatus": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "open or closed.",
+                        "example": "open"
+                    },
+                    "next": {
+                        "type": "string",
+                        "description": "When the status next changes."
+                    }
+                }
+            },
+            "Equity": {
+                "type": "object",
+                "properties": {
+                    "ID": {
+                        "type": "integer"
+                    },
+                    "Symbol": {
+                        "type": "string",
+                        "example": "NEM"
+                    },
+                    "Name": {
+                        "type": "string",
+                        "example": "Newmont Corporation"
+                    },
+                    "Price": {
+                        "type": "number"
+                    },
+                    "Currency": {
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "Volume": {
+                        "type": "number"
+                    },
+                    "High": {
+                        "type": "number"
+                    },
+                    "Low": {
+                        "type": "number"
+                    },
+                    "Change": {
+                        "type": "number"
+                    },
+                    "ChangePercentage": {
+                        "type": "number"
+                    },
+                    "Timestamp": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "ProviderTime": {
+                        "type": "string"
+                    },
+                    "Exchange": {
+                        "type": "string",
+                        "example": "NYSE"
+                    },
+                    "Category": {
+                        "type": "string",
+                        "example": "Gold"
+                    },
+                    "TVExchange": {
+                        "type": "string"
+                    },
+                    "TVSymbol": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "description": "Returned with HTTP 200 when validation fails or the upstream feed reports an error.",
+                "properties": {
+                    "error": {
+                        "type": "string",
+                        "example": "The symbol field is required."
+                    },
+                    "errors": {
+                        "type": "object",
+                        "description": "Validation messages keyed by field, present only for validation failures.",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "error"
+                ]
+            }
+        }
+    }
+}
