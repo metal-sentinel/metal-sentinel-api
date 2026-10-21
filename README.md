@@ -1,5 +1,7 @@
 # Metal Sentinel API
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/703795-79e88024-52c6-4fa7-bdbb-c83bc9d4236a)
+
 Live and historical prices for ten precious and base metals, gold karat and silver fineness prices, forex and crypto quotes, market status and mining stocks, through one REST API.
 
 - **Metals:** gold (AU), silver (AG), platinum (PT), palladium (PD), rhodium (RH), copper (CU), nickel (NI), aluminum (AL), lead (PB), zinc (ZN)
