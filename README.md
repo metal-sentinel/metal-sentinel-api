@@ -7,18 +7,21 @@ Live and historical prices for ten precious and base metals, gold karat and silv
 - **Metals:** gold (AU), silver (AG), platinum (PT), palladium (PD), rhodium (RH), copper (CU), nickel (NI), aluminum (AL), lead (PB), zinc (ZN)
 - **Currencies:** 180+ fiat and crypto
 - **Refresh:** spot quotes every 15 seconds from a primary market feed
-- **Free plan:** 7,500 requests a month, no credit card, same data as paid plans
+- **Free plan:** 7,500 requests a month on RapidAPI, no credit card, same data as paid plans
+- **Marketplaces:** subscribe on [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/finance+%26+payments/metal+sentinel+api/14481); same data and parameters on both
 
 | | |
 |---|---|
-| Get an API key | https://rapidapi.com/ghostsvos/api/metal-sentinel |
-| Endpoint reference | https://metal-sentinel.com/endpoints |
+| Get an API key | [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/finance+%26+payments/metal+sentinel+api/14481) |
+| Endpoint reference | https://metal-sentinel.com/endpoints (Zyla URLs: https://metal-sentinel.com/endpoints?provider=zyla) |
 | Pricing | https://metal-sentinel.com/pricing |
 | OpenAPI 3.1 spec | [`openapi.json`](openapi.json) (also served at https://metal-sentinel.com/openapi.json) |
 | Postman collection | [`postman/metal-sentinel.postman_collection.json`](postman/metal-sentinel.postman_collection.json), or open the [public Postman workspace](https://www.postman.com/mycrofts-team/metal-sentinel/overview) |
 | Free embeddable widgets | https://metal-sentinel.com/widgets |
 
 ## Quick start
+
+### RapidAPI
 
 Every request needs two headers from RapidAPI:
 
@@ -27,6 +30,19 @@ curl "https://metal-sentinel.p.rapidapi.com/api/metal-quote?symbol=AU&currency=U
   -H "x-rapidapi-host: metal-sentinel.p.rapidapi.com" \
   -H "x-rapidapi-key: YOUR_KEY"
 ```
+
+### Zyla API Hub
+
+Zyla gives each endpoint its own URL under `https://zylalabs.com/api/14481/metal+sentinel+api/` and authenticates with a bearer token. Query parameters are the same as on RapidAPI:
+
+```bash
+curl "https://zylalabs.com/api/14481/metal+sentinel+api/36683/current+spot+price+for+one+metal+in+one+currency?symbol=AU&currency=USD" \
+  -H "Authorization: Bearer YOUR_ZYLA_API_KEY"
+```
+
+The Zyla URL for every endpoint is in the [Endpoints](#endpoints) table below and on https://metal-sentinel.com/endpoints?provider=zyla.
+
+### Response
 
 ```json
 {
@@ -45,7 +61,7 @@ Prices are per unit in the requested currency. `unit` is `OUNCE` (troy ounce) fo
 
 ## Code samples
 
-Each sample is a single-file client with a runnable `main`. Set `METAL_SENTINEL_KEY` to your RapidAPI key first.
+Each sample is a single-file client with a runnable `main`. The samples call the RapidAPI gateway; set `METAL_SENTINEL_KEY` to your RapidAPI key first.
 
 | Language | File | Run |
 |---|---|---|
@@ -83,22 +99,22 @@ echo $copper['mid'], ' per ', $copper['unit'];
 
 ## Endpoints
 
-| Endpoint | Returns |
-|---|---|
-| `GET /api/metal-quote?symbol=AU&currency=USD` | Current spot price for one metal |
-| `GET /api/gold-price?currency=USD` | Gold spot price with 24k, 18k, 14k, 9k karat prices |
-| `GET /api/silver-price?currency=USD` | Silver spot price with 999, 958, 925, 900, 800 fineness prices |
-| `GET /api/metal-history?symbol=AU&currency=USD&startTime=…&endTime=…` | Daily prices between two timestamps (max 30 per call) |
-| `GET /api/historical-points?symbol=AU&currency=USD&timestamp=…` | Snapshots now, 30d, 60d, 1y and 5y before a timestamp |
-| `GET /api/crypto-quote?symbol=BTC&currency=USD` | Crypto quote with 24h comparison |
-| `GET /api/forex-quote?symbol=EUR` | FX rate against USD |
-| `GET /api/get-stock` | Mining and commodity equities |
-| `GET /api/market-status` | Open or closed, and the next change |
-| `GET /api/allowed-metals` | Supported metal symbols |
-| `GET /api/allowed-currencies` | Supported fiat codes |
-| `GET /api/allowed-cryptos` | Supported crypto symbols |
+| Endpoint (RapidAPI) | Zyla path | Returns |
+|---|---|---|
+| `GET /api/metal-quote?symbol=AU&currency=USD` | `36683/current+spot+price+for+one+metal+in+one+currency` | Current spot price for one metal |
+| `GET /api/gold-price?currency=USD` | `36684/gold+price+with+karat+values` | Gold spot price with 24k, 18k, 14k, 9k karat prices |
+| `GET /api/silver-price?currency=USD` | `36685/silver+price+with+fineness+values` | Silver spot price with 999, 958, 925, 900, 800 fineness prices |
+| `GET /api/metal-history?symbol=AU&currency=USD&startTime=…&endTime=…` | `36686/daily+historical+prices+between+two+timestamps` | Daily prices between two timestamps (max 30 per call) |
+| `GET /api/historical-points?symbol=AU&currency=USD&timestamp=…` | `36687/historical+price+snapshots` | Snapshots now, 30d, 60d, 1y and 5y before a timestamp |
+| `GET /api/crypto-quote?symbol=BTC&currency=USD` | `36688/live+cryptocurrency+quote+with+24+hour+comparison` | Crypto quote with 24h comparison |
+| `GET /api/forex-quote?symbol=EUR` | `36689/foreign+exchange+rate+against+usd` | FX rate against USD |
+| `GET /api/get-stock` | `36690/live+mining+and+commodity+equities` | Mining and commodity equities |
+| `GET /api/market-status` | `36691/whether+the+metals+market+is+open+and+when+it+next+changes` | Open or closed, and the next change |
+| `GET /api/allowed-metals` | `36692/supported+metal+symbols` | Supported metal symbols |
+| `GET /api/allowed-currencies` | `36693/supported+fiat+currency+codes` | Supported fiat codes |
+| `GET /api/allowed-cryptos` | `36694/supported+cryptocurrency+symbols` | Supported crypto symbols |
 
-Full parameters and response schemas are in [`openapi.json`](openapi.json).
+On Zyla, prefix the Zyla path with `https://zylalabs.com/api/14481/metal+sentinel+api/` and send the same query parameters. Full parameters and response schemas are in [`openapi.json`](openapi.json).
 
 ## Errors
 
