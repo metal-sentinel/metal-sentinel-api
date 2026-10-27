@@ -8,11 +8,11 @@ Live and historical prices for ten precious and base metals, gold karat and silv
 - **Currencies:** 180+ fiat and crypto
 - **Refresh:** spot quotes every 15 seconds from a primary market feed
 - **Free plan:** 7,500 requests a month on RapidAPI, no credit card, same data as paid plans
-- **Marketplaces:** subscribe on [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/market+data+%26+trading/metal+sentinel+api/14542); same data and parameters on both (the two crypto endpoints are on RapidAPI only)
+- **Marketplaces:** subscribe on [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/other/precious+and+base+metals+price+api/14542); same data and parameters on both (the two crypto endpoints are on RapidAPI only)
 
 | | |
 |---|---|
-| Get an API key | [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/market+data+%26+trading/metal+sentinel+api/14542) |
+| Get an API key | [RapidAPI](https://rapidapi.com/ghostsvos/api/metal-sentinel) or [Zyla API Hub](https://zylalabs.com/api-marketplace/other/precious+and+base+metals+price+api/14542) |
 | Endpoint reference | https://metal-sentinel.com/endpoints (Zyla URLs: https://metal-sentinel.com/endpoints?provider=zyla) |
 | Pricing | https://metal-sentinel.com/pricing |
 | OpenAPI 3.1 spec | [`openapi.json`](openapi.json) (also served at https://metal-sentinel.com/openapi.json) |
@@ -33,10 +33,10 @@ curl "https://metal-sentinel.p.rapidapi.com/api/metal-quote?symbol=AU&currency=U
 
 ### Zyla API Hub
 
-Zyla gives each endpoint its own URL under `https://zylalabs.com/api/14542/metal+sentinel+api/` and authenticates with a bearer token. Query parameters are the same as on RapidAPI:
+Zyla gives each endpoint its own URL under `https://zylalabs.com/api/14542/precious+and+base+metals+price+api/` and authenticates with a bearer token. Query parameters are the same as on RapidAPI:
 
 ```bash
-curl "https://zylalabs.com/api/14542/metal+sentinel+api/37151/current+spot+price+for+one+metal+in+one+currency?symbol=AU&currency=USD" \
+curl "https://zylalabs.com/api/14542/precious+and+base+metals+price+api/37151/current+spot+price+for+one+metal+in+one+currency?symbol=AU&currency=USD" \
   -H "Authorization: Bearer YOUR_ZYLA_API_KEY"
 ```
 
@@ -114,7 +114,7 @@ echo $copper['mid'], ' per ', $copper['unit'];
 | `GET /api/allowed-currencies` | `37160/supported+fiat+currency+codes` | Supported fiat codes |
 | `GET /api/allowed-cryptos` | RapidAPI only | Supported crypto symbols |
 
-On Zyla, prefix the Zyla path with `https://zylalabs.com/api/14542/metal+sentinel+api/` and send the same query parameters. Full parameters and response schemas are in [`openapi.json`](openapi.json).
+On Zyla, prefix the Zyla path with `https://zylalabs.com/api/14542/precious+and+base+metals+price+api/` and send the same query parameters. Full parameters and response schemas are in [`openapi.json`](openapi.json).
 
 ## Errors
 
